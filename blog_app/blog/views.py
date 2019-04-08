@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.urls import reverse
 from django.views.generic.edit import FormMixin
-from .forms import CommentForm
+from .forms import CommentForm, PostForm
 from .models import Post
 from django.shortcuts import HttpResponse, redirect
 from .models import Comment
@@ -86,12 +86,20 @@ class PostDetailView(FormMixin, DetailView):
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
-    model = Post
-    fields = [
-        'title',
-        'content',
-        'image'
-    ]
+    # model = Post
+    form_class = PostForm
+    template_name = 'blog/post_form.html'
+
+    # fields = [
+    #     'title',
+    #     'content',
+    #     'image'
+    # ]
+
+    def get(self, request):
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form})
+
     def form_valid(self, form):
         form.instance.author = self.request.user 
         return super().form_valid(form )
