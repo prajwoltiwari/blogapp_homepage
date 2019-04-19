@@ -1,6 +1,6 @@
 from django import forms 
-
-from .models import Comment, Post
+from django.core.validators import MaxValueValidator, MinValueValidator
+from .models import ReviewRating, Post
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -8,11 +8,13 @@ class PostForm(forms.ModelForm):
         fields = ['title', 'content', 'image']
         exclude = ['date_posted', 'author']
 
-class CommentForm(forms.ModelForm):
-    comment = forms.CharField(required = False, widget=forms.TextInput(attrs={'placeholder': 'Type in your comment', 'cols':74.5, 'rows':3}))
+class ReviewRatingForm(forms.ModelForm):
+    review = forms.CharField(required = False, widget=forms.TextInput(attrs={'placeholder': 'Type in your comment', 'cols':74.5, 'rows':3}))
+    rating = forms.IntegerField(required = True, validators=[MinValueValidator(1), MaxValueValidator(10)])
     class Meta:
-        model = Comment
+        model = ReviewRating
         exclude = ('admitted','date_posted', 'author', 'post')
+
 
 
        

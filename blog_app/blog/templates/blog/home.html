@@ -34,7 +34,7 @@
                     {% if post.content|length >= 400 %}
                         <p class="article-content">{{ post.content|safe|truncatechars:"400" }}<a href="{% url 'post-detail' post.id %}">read more</a></p>
                     {% else %}
-                        <p class="article-content">{{ post.content }}</p>
+                        <p class="article-content">{{ post.content|safe }}</p>
                     {% endif %}
                 </div>
             </article>

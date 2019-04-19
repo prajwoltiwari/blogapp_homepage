@@ -14,10 +14,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.urls import reverse
 from django.views.generic.edit import FormMixin
-from .forms import CommentForm, PostForm
-from .models import Post
+from .forms import ReviewRatingForm, PostForm
+from .models import Post, ReviewRating
 from django.shortcuts import HttpResponse, redirect
-from .models import Comment
 from django.http import HttpResponseRedirect
 # Create your views here.
 
@@ -51,7 +50,7 @@ class UserPostListView(ListView):
 
 class PostDetailView(FormMixin, DetailView):
     model = Post
-    form_class = CommentForm 
+    form_class = ReviewRatingForm 
 
     def success_url(self):
         return reverse('post-detail', kwargs={'pk': self.object.pk})
@@ -80,6 +79,12 @@ class PostDetailView(FormMixin, DetailView):
     def form_valid(self, form):
         form.instance.author = self.request.user 
         return super().form_valid(form)
+
+
+    # def get(self, request, pk):
+    #     comments = Comment.objects.all()
+    #     context = {'comments': comments}
+    #     return render(request, 'blog/post_detail.html', context)
 
     
 

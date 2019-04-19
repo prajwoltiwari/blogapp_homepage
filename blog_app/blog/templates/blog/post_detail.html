@@ -18,7 +18,7 @@
                 </div>
                 <h2 class="article-title">{{ object.title }}</h2>
                 <img src="{{ object.image.url }}" class="img-fluid" alt="Responsive image">
-                <p class="article-content">{{ object.content }}</p>
+                <p class="article-content">{{ object.content|safe }}</p>
             </div>
         </article>
 
@@ -26,7 +26,7 @@
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-2">Comment</legend>
-                {{ form|crispy }}
+                {{ form }}
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-outline-info btn-sm mb-4" type="submit">Submit</button>

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.core.validators import MaxValueValidator, MinValueValidator
 from PIL import Image
 from ckeditor.fields import RichTextField
 
@@ -30,8 +31,9 @@ class Post(models.Model):
             img.save(self.image.path)
 
 
-class Comment(models.Model):
-    comment = models.TextField(blank=True)
+class ReviewRating(models.Model):
+    review = models.TextField(blank=True)
+    rating = models.IntegerField(blank=False, default=1, validators=[MaxValueValidator(10), MinValueValidator(1)])
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
@@ -42,4 +44,4 @@ class Comment(models.Model):
         post = self.kwargs['pk']
 
     def __str__(self):
-        return f'{self.post.title}, Commented by {self.author.username}'
+        return f'{self.post.title}, reviewed by {self.author.username}'
